@@ -179,6 +179,20 @@ endef
 
 $(eval $(call KernelPackage,can-raw))
 
+define KernelPackage/can-rockchip-canfd
+  SUBMENU:=$(CAN_MENU)
+  TITLE:=Rockchip CANFD controller driver
+  DEPENDS:=@TARGET_rockchip +kmod-can
+  KCONFIG:=CONFIG_CAN_ROCKCHIP_CANFD
+  FILES:=$(LINUX_DIR)/drivers/net/can/rockchip/rockchip_canfd.ko
+  AUTOLOAD:=$(call AutoProbe,rockchip_canfd)
+endef
+
+define KernelPackage/can-rockchip-canfd/description
+  Kernel module for Rockchip CANFD controller (RK3568)
+endef
+
+$(eval $(call KernelPackage,can-rockchip-canfd))
 
 define KernelPackage/can-slcan
   TITLE:=Serial / USB serial CAN Adaptors (slcan)

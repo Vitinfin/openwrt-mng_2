@@ -1,0 +1,103 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * DTS for iCore 3568JQ (based on Radxa ROCK 3A)
+ */
+
+/dts-v1/;
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/pinctrl/rockchip.h>
+#include "rk3568.dtsi"
+
+/ {
+    model = "iCore 3568JQ";
+    compatible = "icore,3568jq", "rockchip,rk3568";
+
+    aliases {
+        ethernet0 = &gmac1;
+        mmc0 = &sdhci;
+        mmc1 = &sdmmc0;
+    };
+
+    chosen {
+        stdout-path = "serial2:1500000n8";
+    };
+
+    gmac1_clkin: external-gmac1-clock {
+        compatible = "fixed-clock";
+        clock-frequency = <125000000>;
+        clock-output-names = "gmac1_clkin";
+        #clock-cells = <0>;
+    };
+
+    vcc3v3_sys: regulator-vcc3v3-sys {
+        compatible = "regulator-fixed";
+        regulator-name = "vcc3v3_sys";
+        regulator-always-on;
+        regulator-boot-on;
+        regulator-min-microvolt = <3300000>;
+        regulator-max-microvolt = <3300000>;
+    };
+
+    vcc5v0_usb: regulator-vcc5v0-usb {
+        compatible = "regulator-fixed";
+        regulator-name = "vcc5v0_usb";
+        regulator-always-on;
+        regulator-boot-on;
+        regulator-min-microvolt = <5000000>;
+        regulator-max-microvolt = <5000000>;
+    };
+};
+
+&gmac1 {
+    assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
+    assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&gmac1_clkin>;
+    clock_in_out = "input";
+    phy-mode = "rgmii-id";
+    phy-handle = <&rgmii_phy1>;
+    phy-supply = <&vcc_3v3>;
+    pinctrl-names = "default";
+    pinctrl-0 = <&gmac1m1_miim
+                 &gmac1m1_tx_bus2
+                 &gmac1m1_rx_bus2
+                 &gmac1m1_rgmii_clk
+                 &gmac1m1_clkinout
+                 &gmac1m1_rgmii_bus>;
+    status = "okay";
+};
+
+&mdio1 {
+    rgmii_phy1: ethernet-phy@0 {
+        compatible = "ethernet-phy-ieee802.3-c22";
+        reg = <0x0>;
+    };
+};
+
+&sdhci {
+    bus-width = <8>;
+    non-removable;
+    vmmc-supply = <&vcc_3v3>;
+    vqmmc-supply = <&vcc_1v8>;
+    status = "okay";
+};
+
+&sdmmc0 {
+    bus-width = <4>;
+    cap-sd-highspeed;
+    cd-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_LOW>;
+    disable-wp;
+    vmmc-supply = <&vcc3v3_sd>;
+    vqmmc-supply = <&vccio_sd>;
+    status = "okay";
+};
+
+&uart2 {
+    status = "okay";
+};
+
+&usb_host0_ehci { status = "okay"; };
+&usb_host0_ohci { status = "okay"; };
+&usb_host1_ehci { status = "okay"; };
+&usb_host1_ohci { status = "okay"; };
+
+&usb2phy0 { status = "okay"; };
+&usb2phy1 { status = "okay"; };

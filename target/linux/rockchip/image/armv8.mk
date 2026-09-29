@@ -460,3 +460,20 @@ define Device/xunlong_orangepi-r1-plus-lts
   DEVICE_PACKAGES := kmod-usb-net-rtl8152
 endef
 TARGET_DEVICES += xunlong_orangepi-r1-plus-lts
+
+define Device/icore_3568jq
+  $(Device/rk3568)
+  DEVICE_VENDOR := iCore
+  DEVICE_MODEL := 3568JQ
+  DEVICE_DTS := icore-3568jq
+  UBOOT_DEVICE_NAME := icore-3568jq-rk3568
+  DEVICE_PACKAGES := \
+        kmod-can \
+        kmod-can-raw \
+        can-utils \
+        kmod-usb-net \
+        kmod-usb-net-rndis \
+        kmod-gpio-button-hotplug
+endef
+TARGET_DEVICES += icore_3568jq
+

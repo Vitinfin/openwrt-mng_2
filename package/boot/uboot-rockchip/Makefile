@@ -295,6 +295,14 @@ define U-Boot/rock-3a-rk3568
     radxa_rock-3a
 endef
 
+define U-Boot/icore-3568jq-rk3568
+$(U-Boot/rk3568/Default)
+NAME:=Firefly iCore-3568JQ
+BUILD_DEVICES:= \
+	icore_3568jq
+UBOOT_CONFIG:=rock-3a-rk3568
+endef
+
 define U-Boot/rock-3b-rk3568
   $(U-Boot/rk3568/Default)
   NAME:=ROCK 3B
@@ -441,6 +449,7 @@ UBOOT_TARGETS := \
   nanopi-r5s-rk3568 \
   radxa-e25-rk3568 \
   rock-3a-rk3568 \
+  icore-3568jq-rk3568 \
   rock-3b-rk3568 \
   generic-rk3576 \
   rock-4d-rk3576 \
